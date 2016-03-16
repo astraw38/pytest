@@ -371,3 +371,29 @@ The equivalent with "boolean conditions" is::
     imported before py.test's argument parsing takes place.  For example,
     ``conftest.py`` files are imported before command line parsing and thus
     ``config.getvalue()`` will not execute correctly.
+    
+    
+Re-using Conditionals for Multiple Expected Fails
+-------------------------------------------------
+
+If you have a specific configuration or product version that causes multiple 
+failures across test suites, but for various reasons or causes different exceptions 
+to be raised, you can use the `functools.partial` function 
+to simplify your decorators.::
+
+    import sys
+    from functools import partial
+    
+    PY3_XFAIL = partial(pytest.mark.xfail, condition=(sys.version_info >= (3,0)))
+    
+    @PY3_XFAIL(reason="'print' is a function")
+    def test_one():
+    	print "Fail me"
+    
+    @PY3_XFAIL(reason="iteritems deprecated in favor of items")
+    def test_two():
+    	for key, val in {1: 2, 3: 4}.iteritems():
+    		print("Key: %s, Val: %s" % (key, val))
+    		
+    		
+    	
