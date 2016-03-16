@@ -373,13 +373,14 @@ The equivalent with "boolean conditions" is::
     ``config.getvalue()`` will not execute correctly.
     
     
-Re-using Conditionals for Multiple Expected Fails
--------------------------------------------------
+Re-using Conditionals for Multiple XFails
+-----------------------------------------
 
 If you have a specific configuration or product version that causes multiple 
 failures across test suites, but for various reasons or causes different exceptions 
 to be raised, you can use the `functools.partial` function 
-to simplify your decorators.::
+to simplify your decorators. If you use one conditional or reason across many tests,
+this can simplify your xfail decorators::
 
     import sys
     from functools import partial
